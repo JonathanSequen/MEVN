@@ -5,12 +5,23 @@ import path from 'path';
 
 const app = express();
 
+//conexion a DB
+const mongoose = require('mongoose');
+const uri ='mongodb://localhost:27017/menu';
+const options = {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true };
+mongoose.connect(uri, options).then(
+  () => { console.log('Conectado a DB') },
+  err => { err }
+);
+
 // Middleware
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/api', require('./routes/menuu'));
 
 // Rutas
 /*app.get('/', (req, res) => {
@@ -24,5 +35,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('puerto', process.env.PORT || 3000);
 app.listen(app.get('puerto'), () => {
-  console.log('Example app listening on port'+ app.get('puerto'));
+  console.log('conectando al puerto '+ app.get('puerto'));
 });
